@@ -8,6 +8,10 @@ export default new VueRouter({
 			component: require('./components/students/Students')
 		},
 		{
+			path: '/students/register',
+			component: require('./components/students/Students-Register')
+		},
+		{
 			path: '/subjects',
 			component: require('./components/Subjects')
 		}

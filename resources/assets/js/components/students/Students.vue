@@ -30,10 +30,19 @@
 
 <script>
     export default {
+        methods: {
+            test(userId) {
+                alert(userId);
+            }
+        },
         computed: {
             students() {
                 return this.$store.getters.allStudents
             }
-        }
+        },
+        watch: {
+            // call again the method if the route changes
+            '$route': 'students'
+        },
     }
 </script>

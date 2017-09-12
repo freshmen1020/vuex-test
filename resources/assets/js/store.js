@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
+		newStudent: {first_name: '', last_name: ''},
 		students: [],
 		subjects: [],
 	},
@@ -14,6 +15,9 @@ export default new Vuex.Store({
 		},
 		allSubjects(state){
 			return state.subjects
+		},
+		newStudent(state){
+			return state.newStudent
 		}
 	},
 	mutations: { //change the state on fly
@@ -23,6 +27,14 @@ export default new Vuex.Store({
 		loadSubjects(state, subjects){
 			state.subjects = subjects;
 		},
+		registerNewStudent(state, payload){
+			const first_name = payload.first_name;
+			const last_name = payload.last_name;
+		},
+		updateStudentLists(state, student){
+			state.students.push(student);
+			state.newStudent = {first_name: '', last_name: ''}
+		},
 	},
 	actions: {
 		loadStudents(context, payload){
@@ -30,6 +42,12 @@ export default new Vuex.Store({
 		},
 		loadSubjects(context, payload){
 			context.loadSubjects(payload)
+		},
+		registerStudent(context, payload){
+			axios.post('/api/register-student', payload)
+	        .then(function(response){
+	        	context.commit('updateStudentLists', response.data)
+	        })
 		},
 	}
 })

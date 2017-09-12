@@ -15513,6 +15513,9 @@ module.exports = function spread(callback) {
 		alias: '/students',
 		component: __webpack_require__(36)
 	}, {
+		path: '/students/register',
+		component: __webpack_require__(56)
+	}, {
 		path: '/subjects',
 		component: __webpack_require__(39)
 	}],
@@ -15597,10 +15600,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    methods: {
+        test: function test(userId) {
+            alert(userId);
+        }
+    },
     computed: {
         students: function students() {
             return this.$store.getters.allStudents;
         }
+    },
+    watch: {
+        // call again the method if the route changes
+        '$route': 'students'
     }
 });
 
@@ -15805,6 +15817,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
+		newStudent: { first_name: '', last_name: '' },
 		students: [],
 		subjects: []
 	},
@@ -15814,6 +15827,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		},
 		allSubjects: function allSubjects(state) {
 			return state.subjects;
+		},
+		newStudent: function newStudent(state) {
+			return state.newStudent;
 		}
 	},
 	mutations: {
@@ -15823,6 +15839,14 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		},
 		loadSubjects: function loadSubjects(state, subjects) {
 			state.subjects = subjects;
+		},
+		registerNewStudent: function registerNewStudent(state, payload) {
+			var first_name = payload.first_name;
+			var last_name = payload.last_name;
+		},
+		updateStudentLists: function updateStudentLists(state, student) {
+			state.students.push(student);
+			state.newStudent = { first_name: '', last_name: '' };
 		}
 	},
 	actions: {
@@ -15831,9 +15855,269 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		},
 		loadSubjects: function loadSubjects(context, payload) {
 			context.loadSubjects(payload);
+		},
+		registerStudent: function registerStudent(context, payload) {
+			axios.post('/api/register-student', payload).then(function (response) {
+				context.commit('updateStudentLists', response.data);
+			});
 		}
 	}
 }));
+
+/***/ }),
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(8)(
+  /* script */
+  __webpack_require__(57),
+  /* template */
+  __webpack_require__(58),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\server\\laragon\\www\\vuex-test\\resources\\assets\\js\\components\\students\\Students-Register.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Students-Register.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75594fd4", Component.options)
+  } else {
+    hotAPI.reload("data-v-75594fd4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            registerSuccess: false,
+            error: {
+                first_name: false,
+                last_name: false
+            }
+        };
+    },
+    computed: {
+        newStudent: function newStudent() {
+            return this.$store.getters.newStudent;
+        }
+    },
+    methods: {
+        registerStudent: function registerStudent(newStudent) {
+            this.error.first_name = false;
+            this.error.last_name = false;
+            this.registerSuccess = false;
+
+            if (newStudent.first_name == '' || newStudent.last_name == '') {
+                if (newStudent.first_name == '') {
+                    this.error.first_name = true;
+                }
+                if (newStudent.last_name == '') {
+                    this.error.last_name = true;
+                }
+            } else {
+                this.$store.dispatch('registerStudent', newStudent);
+                this.registerSuccess = true;
+            }
+        },
+        clearSuccess: function clearSuccess() {
+            this.registerSuccess = false;
+        }
+    }
+});
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('router-link', {
+    staticClass: "btn btn-default btn-sm",
+    attrs: {
+      "exact": "",
+      "to": "/students"
+    }
+  }, [_c('i', {
+    staticClass: "glyphicon glyphicon-chevron-left"
+  })]), _vm._v(" Register Student\n                ")], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [(_vm.registerSuccess) ? _c('div', {
+    staticClass: "alert alert-success",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clearSuccess();
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('strong', [_vm._v("Success!")]), _vm._v(" Student has been registered\n                    ")]) : _vm._e(), _vm._v(" "), _c('form', [_c('div', {
+    staticClass: "form-group",
+    class: [_vm.error.first_name ? 'has-error' : '']
+  }, [_c('label', {
+    attrs: {
+      "for": "first_name"
+    }
+  }, [_vm._v("First Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newStudent.first_name),
+      expression: "newStudent.first_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "first_name",
+      "placeholder": "First Name"
+    },
+    domProps: {
+      "value": (_vm.newStudent.first_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newStudent.first_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.error.first_name) ? _c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "helpBlock2"
+    }
+  }, [_vm._v("Enter student first name")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: [_vm.error.last_name ? 'has-error' : '']
+  }, [_c('label', {
+    attrs: {
+      "for": "last_name"
+    }
+  }, [_vm._v("Last Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newStudent.last_name),
+      expression: "newStudent.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "last_name",
+      "placeholder": "Last Name"
+    },
+    domProps: {
+      "value": (_vm.newStudent.last_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newStudent.last_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.error.last_name) ? _c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "helpBlock2"
+    }
+  }, [_vm._v("Enter student last name")]) : _vm._e()]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default btn-block btn-primary",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        _vm.registerStudent(_vm.newStudent);
+      }
+    }
+  }, [_vm._v("Register")])])])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-75594fd4", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
