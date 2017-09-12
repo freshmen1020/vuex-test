@@ -6,7 +6,9 @@
                     <div class="panel-heading">Subject Lists</div>
 
                     <div class="panel-body">
-                        asd
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="subject in subjects">{{subject.subject}}</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -16,5 +18,10 @@
 
 <script>
     export default {
+        computed: {
+            subjects() {
+                return this.$store.getters.allSubjects
+            }
+        }
     }
 </script>

@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'api'], function(){
 	Route::get('students', 'StudentsController@index');
+	Route::get('subjects', 'SubjectsController@index');
 });

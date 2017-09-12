@@ -14,7 +14,7 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        return \App\Student::get();
+        return Student::get();
     }
 
     /**

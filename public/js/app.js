@@ -3381,6 +3381,10 @@ new Vue({
         axios.get('/api/students').then(function (response) {
             return _this.$store.commit('loadStudents', response.data);
         });
+
+        axios.get('/api/subjects').then(function (response) {
+            return _this.$store.commit('loadSubjects', response.data);
+        });
     }
 });
 
@@ -15581,8 +15585,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    computed: {
+        students: function students() {
+            return this.$store.getters.allStudents;
+        }
+    }
+});
 
 /***/ }),
 /* 38 */
@@ -15610,7 +15630,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "clearfix"
   })], 1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_vm._v("\n                    qwe\n                ")])])])])])
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.students), function(student) {
+    return _c('li', {
+      key: student.id,
+      staticClass: "list-group-item"
+    }, [_c('router-link', {
+      attrs: {
+        "to": student.subjects_path
+      }
+    }, [_c('span', {
+      staticClass: "badge"
+    }, [_vm._v(_vm._s(student.subjects.length))]), _vm._v(" Subjects - " + _vm._s(student.first_name + ' ' + student.last_name))]), _vm._v(" "), _c('span', {
+      staticClass: "pull-right"
+    }, [_c('router-link', {
+      staticClass: " btn btn-default btn-sm",
+      attrs: {
+        "to": student.edit_path
+      }
+    }, [_vm._v("Edit")]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-danger btn-sm ",
+      on: {
+        "click": function($event) {
+          _vm.test(student.id);
+        }
+      }
+    }, [_vm._v("Delete")])], 1), _vm._v(" "), _c('div', {
+      staticClass: "clearfix"
+    })], 1)
+  })), _vm._v(" "), (_vm.students.length <= 0) ? _c('p', [_vm._v("Please register a student first")]) : _vm._e()])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -15682,16 +15731,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    computed: {
+        subjects: function subjects() {
+            return this.$store.getters.allSubjects;
+        }
+    }
+});
 
 /***/ }),
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
   }, [_c('div', {
@@ -15704,8 +15759,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("Subject Lists")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_vm._v("\n                    asd\n                ")])])])])])
-}]}
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.subjects), function(subject) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_vm._v(_vm._s(subject.subject))])
+  }))])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -15744,22 +15805,32 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
-		students: []
+		students: [],
+		subjects: []
 	},
 	getters: {
 		allStudents: function allStudents(state) {
 			return state.students;
+		},
+		allSubjects: function allSubjects(state) {
+			return state.subjects;
 		}
 	},
 	mutations: {
 		//change the state on fly
 		loadStudents: function loadStudents(state, students) {
 			state.students = students;
+		},
+		loadSubjects: function loadSubjects(state, subjects) {
+			state.subjects = subjects;
 		}
 	},
 	actions: {
 		loadStudents: function loadStudents(context, payload) {
 			context.loadStudents(payload);
+		},
+		loadSubjects: function loadSubjects(context, payload) {
+			context.loadSubjects(payload);
 		}
 	}
 }));
