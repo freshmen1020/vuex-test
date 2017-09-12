@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('main');
 });
+
+Route::group(['prefix'=>'api'], function(){
+	Route::get('students', 'StudentsController@index');
+});

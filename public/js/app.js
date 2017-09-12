@@ -3366,12 +3366,22 @@ module.exports = __webpack_require__(42);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__routes__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__(52);
+
 
 
 
 new Vue({
     el: '#main-app',
-    router: __WEBPACK_IMPORTED_MODULE_1__routes__["a" /* default */]
+    router: __WEBPACK_IMPORTED_MODULE_1__routes__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */],
+    mounted: function mounted() {
+        var _this = this;
+
+        axios.get('/api/students').then(function (response) {
+            return _this.$store.commit('loadStudents', response.data);
+        });
+    }
 });
 
 /***/ }),
@@ -14418,7 +14428,7 @@ var index_esm = {
   createNamespacedHelpers: createNamespacedHelpers
 };
 
-/* unused harmony default export */ var _unused_webpack_default_export = (index_esm);
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
 
 
 /***/ }),
@@ -15709,6 +15719,50 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(14);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+	state: {
+		students: []
+	},
+	getters: {
+		allStudents: function allStudents(state) {
+			return state.students;
+		}
+	},
+	mutations: {
+		//change the state on fly
+		loadStudents: function loadStudents(state, students) {
+			state.students = students;
+		}
+	},
+	actions: {
+		loadStudents: function loadStudents(context, payload) {
+			context.loadStudents(payload);
+		}
+	}
+}));
 
 /***/ })
 /******/ ]);
