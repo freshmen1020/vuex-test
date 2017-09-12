@@ -34,8 +34,11 @@ class StudentsController extends Controller
         //
     }
 
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        //
+        $student = Student::where('id', $id)->first();
+        $student->delete();
+
+        return ['Student Deleted'];
     }
 }

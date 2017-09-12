@@ -15604,19 +15604,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    methods: {
-        test: function test(userId) {
-            alert(userId);
-        }
-    },
     computed: {
         students: function students() {
             return this.$store.getters.allStudents;
         }
     },
-    watch: {
-        // call again the method if the route changes
-        '$route': 'students'
+    methods: {
+        deleteStudent: function deleteStudent(studentId) {
+            if (confirm('Delete this student')) {
+                this.$store.dispatch('deleteStudent', studentId);
+            }
+        }
     }
 });
 
@@ -15669,7 +15667,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-danger btn-sm ",
       on: {
         "click": function($event) {
-          _vm.test(student.id);
+          _vm.deleteStudent(student.id);
         }
       }
     }, [_vm._v("Delete")])], 1), _vm._v(" "), _c('div', {
@@ -15852,6 +15850,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 			state.students.push(student);
 			state.newStudent = { first_name: '', last_name: '' };
 		},
+		deleteStudent: function deleteStudent(state, studentId) {
+			var student = state.students.find(function (student) {
+				return student.id == studentId;
+			});
+			state.students.splice(state.students.indexOf(student), 1);
+		},
 		updateStudentSubjects: function updateStudentSubjects(state, payload) {
 			var student = state.students.find(function (student) {
 				return student.id == payload.student_id;
@@ -15877,6 +15881,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		registerStudent: function registerStudent(context, payload) {
 			axios.post('/api/register-student', payload).then(function (response) {
 				context.commit('updateStudentLists', response.data);
+			});
+		},
+		deleteStudent: function deleteStudent(context, studentId) {
+			axios.delete('/api/delete-student/' + studentId).then(function (response) {
+				context.commit('deleteStudent', studentId);
 			});
 		},
 		registerStudentToSubject: function registerStudentToSubject(context, payload) {

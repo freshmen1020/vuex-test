@@ -35,6 +35,12 @@ export default new Vuex.Store({
 			state.students.push(student);
 			state.newStudent = {first_name: '', last_name: ''}
 		},
+		deleteStudent(state, studentId){
+			const student = state.students.find(student => {
+				return student.id == studentId;
+			})
+			state.students.splice(state.students.indexOf(student), 1);
+		},
 		updateStudentSubjects(state, payload){
 			const student = state.students.find(student => {
 				return student.id == payload.student_id;
@@ -61,6 +67,12 @@ export default new Vuex.Store({
 			axios.post('/api/register-student', payload)
 	        .then(function(response){
 	        	context.commit('updateStudentLists', response.data)
+	        })
+		},
+		deleteStudent(context, studentId){
+			axios.delete('/api/delete-student/'+studentId)
+	        .then(function(response){
+	        	context.commit('deleteStudent', studentId)
 	        })
 		},
 		registerStudentToSubject(context, payload){

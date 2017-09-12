@@ -15,7 +15,7 @@
                                 <router-link :to="student.subjects_path"><span class="badge">{{student.subjects.length}}</span> Subjects - {{student.first_name+' '+student.last_name}}</router-link>
                                 <span class="pull-right">
                                     <router-link :to="student.edit_path" class=" btn btn-default btn-sm">Edit</router-link>
-                                    <button class="btn btn-danger btn-sm " @click="test(student.id);">Delete</button>
+                                    <button class="btn btn-danger btn-sm " @click="deleteStudent(student.id);">Delete</button>
                                 </span>
                                 <div class="clearfix"></div>
                             </li>
@@ -30,19 +30,17 @@
 
 <script>
     export default {
-        methods: {
-            test(userId) {
-                alert(userId);
-            }
-        },
         computed: {
             students() {
                 return this.$store.getters.allStudents
             }
         },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'students'
+        methods: {
+            deleteStudent(studentId) {
+            	if(confirm('Delete this student')){
+	                this.$store.dispatch('deleteStudent', studentId);
+            	}
+            }
         },
     }
 </script>
