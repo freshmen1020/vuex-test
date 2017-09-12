@@ -15520,6 +15520,10 @@ module.exports = function spread(callback) {
 		props: true,
 		component: __webpack_require__(59)
 	}, {
+		path: '/students/:id/edit',
+		props: true,
+		component: __webpack_require__(62)
+	}, {
 		path: '/subjects',
 		component: __webpack_require__(39)
 	}],
@@ -15856,12 +15860,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 			});
 			state.students.splice(state.students.indexOf(student), 1);
 		},
-		updateStudentSubjects: function updateStudentSubjects(state, payload) {
+		updateStudentData: function updateStudentData(state, updatedStudent) {
 			var student = state.students.find(function (student) {
-				return student.id == payload.student_id;
+				return student.id == updatedStudent.id;
 			});
-
-			student.subjects = payload.data;
+		},
+		updateStudentSubjects: function updateStudentSubjects(state, payload) {
+			var student = state.students.find(student.id == payload.student_id);
+			index = state.students.indexOf(student);
+			state.students[index] = payload;
 		},
 		updateStudentSubjectIds: function updateStudentSubjectIds(state, payload) {
 			var student = state.students.find(function (student) {
@@ -15881,6 +15888,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		registerStudent: function registerStudent(context, payload) {
 			axios.post('/api/register-student', payload).then(function (response) {
 				context.commit('updateStudentLists', response.data);
+			});
+		},
+		updateStudent: function updateStudent(context, payload) {
+			axios.patch('/api/update-student/' + payload.id, payload).then(function (response) {
+				context.commit('updateStudentData', payload);
 			});
 		},
 		deleteStudent: function deleteStudent(context, studentId) {
@@ -16320,6 +16332,263 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-5b9c6f8c", module.exports)
+  }
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(8)(
+  /* script */
+  __webpack_require__(63),
+  /* template */
+  __webpack_require__(64),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\server\\laragon\\www\\vuex-test\\resources\\assets\\js\\components\\students\\Students-Edit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Students-Edit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0086f17d", Component.options)
+  } else {
+    hotAPI.reload("data-v-0086f17d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['id'],
+    data: function data() {
+        return {
+            editSuccess: false,
+            error: {
+                first_name: false,
+                last_name: false
+            }
+        };
+    },
+    computed: {
+        student: function student() {
+            var _this = this;
+
+            return this.$store.getters.allStudents.filter(function (item) {
+                return item.id == _this.id;
+            })[0];
+        }
+    },
+    methods: {
+        updateStudent: function updateStudent(student) {
+            this.error.first_name = false;
+            this.error.last_name = false;
+            this.editSuccess = false;
+
+            if (student.first_name == '' || student.last_name == '') {
+                if (student.first_name == '') {
+                    this.error.first_name = true;
+                }
+                if (student.last_name == '') {
+                    this.error.last_name = true;
+                }
+            } else {
+                this.$store.dispatch('updateStudent', student);
+                this.editSuccess = true;
+            }
+        },
+        clearSuccess: function clearSuccess() {
+            this.editSuccess = false;
+        }
+    }
+});
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('router-link', {
+    staticClass: "btn btn-default btn-sm",
+    attrs: {
+      "exact": "",
+      "to": "/students"
+    }
+  }, [_c('i', {
+    staticClass: "glyphicon glyphicon-chevron-left"
+  })]), _vm._v(" Edit Student Info\n                ")], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [(_vm.editSuccess) ? _c('div', {
+    staticClass: "alert alert-success",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clearSuccess();
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('strong', [_vm._v("Success!")]), _vm._v(" Student has been updated\n                    ")]) : _vm._e(), _vm._v(" "), _c('form', [_c('div', {
+    staticClass: "form-group",
+    class: [_vm.error.first_name ? 'has-error' : '']
+  }, [_c('label', {
+    attrs: {
+      "for": "first_name"
+    }
+  }, [_vm._v("First Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.student.first_name),
+      expression: "student.first_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "first_name",
+      "placeholder": "First Name"
+    },
+    domProps: {
+      "value": (_vm.student.first_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.student.first_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.error.first_name) ? _c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "helpBlock2"
+    }
+  }, [_vm._v("Enter student first name")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: [_vm.error.last_name ? 'has-error' : '']
+  }, [_c('label', {
+    attrs: {
+      "for": "last_name"
+    }
+  }, [_vm._v("Last Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.student.last_name),
+      expression: "student.last_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "last_name",
+      "placeholder": "Last Name"
+    },
+    domProps: {
+      "value": (_vm.student.last_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.student.last_name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), (_vm.error.last_name) ? _c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "helpBlock2"
+    }
+  }, [_vm._v("Enter student last name")]) : _vm._e()]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default btn-block btn-primary",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        _vm.updateStudent(_vm.student);
+      }
+    }
+  }, [_vm._v("Update")])])])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0086f17d", module.exports)
   }
 }
 

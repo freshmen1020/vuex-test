@@ -29,9 +29,14 @@ class StudentsController extends Controller
         return $student;
     }
 
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        //
+        $student = Student::where('id', $id)->first();
+        $student->first_name = $request->first_name;
+        $student->last_name = $request->last_name;
+        $student->save();
+
+        return ['Student Updated'];
     }
 
     public function destroy($id)

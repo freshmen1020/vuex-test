@@ -41,12 +41,15 @@ export default new Vuex.Store({
 			})
 			state.students.splice(state.students.indexOf(student), 1);
 		},
-		updateStudentSubjects(state, payload){
+		updateStudentData(state, updatedStudent){
 			const student = state.students.find(student => {
-				return student.id == payload.student_id;
+				return student.id == updatedStudent.id;
 			})
-
-			student.subjects = payload.data;
+		},
+		updateStudentSubjects(state, payload){
+			const student = state.students.find(student.id == payload.student_id)
+			index = state.students.indexOf(student)
+			state.students[index] = payload;
 		},
 		updateStudentSubjectIds(state, payload){
 			const student = state.students.find(student => {
@@ -67,6 +70,12 @@ export default new Vuex.Store({
 			axios.post('/api/register-student', payload)
 	        .then(function(response){
 	        	context.commit('updateStudentLists', response.data)
+	        })
+		},
+		updateStudent(context, payload){
+			axios.patch('/api/update-student/'+payload.id, payload)
+	        .then(function(response){
+	        	context.commit('updateStudentData', payload)
 	        })
 		},
 		deleteStudent(context, studentId){

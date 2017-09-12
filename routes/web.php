@@ -19,6 +19,7 @@ Route::group(['prefix'=>'api'], function(){
 	Route::get('students', 'StudentsController@index');
 	Route::get('subjects', 'SubjectsController@index');
 	Route::post('register-student', 'StudentsController@store');
+	Route::patch('update-student/{id}', 'StudentsController@update');
 	Route::delete('delete-student/{id}', 'StudentsController@destroy');
 	Route::post('register-to-subject', 'SubjectsController@register');
 	Route::post('unregister-to-subject', 'SubjectsController@unregister');
