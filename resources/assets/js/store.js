@@ -35,6 +35,20 @@ export default new Vuex.Store({
 			state.students.push(student);
 			state.newStudent = {first_name: '', last_name: ''}
 		},
+		updateStudentSubjects(state, payload){
+			const student = state.students.find(student => {
+				return student.id == payload.student_id;
+			})
+
+			student.subjects = payload.data;
+		},
+		updateStudentSubjectIds(state, payload){
+			const student = state.students.find(student => {
+				return student.id == payload.student_id;
+			})
+
+			student.subject_ids = payload.data;
+		}
 	},
 	actions: {
 		loadStudents(context, payload){
@@ -49,5 +63,19 @@ export default new Vuex.Store({
 	        	context.commit('updateStudentLists', response.data)
 	        })
 		},
+		registerStudentToSubject(context, payload){
+			axios.post('/api/register-to-subject', payload)
+	        .then(function(response){
+	        	context.commit('updateStudentSubjects', {student_id: payload.student_id, data: response.data[0]})
+	        	context.commit('updateStudentSubjectIds', {student_id: payload.student_id, data: response.data[1]})
+	        })
+		},
+		unregisterStudentToSubject(context, payload){
+			axios.post('/api/unregister-to-subject', payload)
+	        .then(function(response){
+	        	context.commit('updateStudentSubjects', {student_id: payload.student_id, data: response.data[0]})
+	        	context.commit('updateStudentSubjectIds', {student_id: payload.student_id, data: response.data[1]})
+	        })
+		}
 	}
 })

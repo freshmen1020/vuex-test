@@ -15516,6 +15516,10 @@ module.exports = function spread(callback) {
 		path: '/students/register',
 		component: __webpack_require__(56)
 	}, {
+		path: '/students/:id',
+		props: true,
+		component: __webpack_require__(59)
+	}, {
 		path: '/subjects',
 		component: __webpack_require__(39)
 	}],
@@ -15847,6 +15851,20 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		updateStudentLists: function updateStudentLists(state, student) {
 			state.students.push(student);
 			state.newStudent = { first_name: '', last_name: '' };
+		},
+		updateStudentSubjects: function updateStudentSubjects(state, payload) {
+			var student = state.students.find(function (student) {
+				return student.id == payload.student_id;
+			});
+
+			student.subjects = payload.data;
+		},
+		updateStudentSubjectIds: function updateStudentSubjectIds(state, payload) {
+			var student = state.students.find(function (student) {
+				return student.id == payload.student_id;
+			});
+
+			student.subject_ids = payload.data;
 		}
 	},
 	actions: {
@@ -15859,6 +15877,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 		registerStudent: function registerStudent(context, payload) {
 			axios.post('/api/register-student', payload).then(function (response) {
 				context.commit('updateStudentLists', response.data);
+			});
+		},
+		registerStudentToSubject: function registerStudentToSubject(context, payload) {
+			axios.post('/api/register-to-subject', payload).then(function (response) {
+				context.commit('updateStudentSubjects', { student_id: payload.student_id, data: response.data[0] });
+				context.commit('updateStudentSubjectIds', { student_id: payload.student_id, data: response.data[1] });
+			});
+		},
+		unregisterStudentToSubject: function unregisterStudentToSubject(context, payload) {
+			axios.post('/api/unregister-to-subject', payload).then(function (response) {
+				context.commit('updateStudentSubjects', { student_id: payload.student_id, data: response.data[0] });
+				context.commit('updateStudentSubjectIds', { student_id: payload.student_id, data: response.data[1] });
 			});
 		}
 	}
@@ -16116,6 +16146,171 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-75594fd4", module.exports)
+  }
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(8)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(61),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "E:\\server\\laragon\\www\\vuex-test\\resources\\assets\\js\\components\\students\\Students-Subjects.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Students-Subjects.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5b9c6f8c", Component.options)
+  } else {
+    hotAPI.reload("data-v-5b9c6f8c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['id'],
+    data: function data() {
+        return {
+            student_id: this.id
+        };
+    },
+    computed: {
+        student: function student() {
+            var _this = this;
+
+            return this.$store.getters.allStudents.filter(function (item) {
+                return item.id == _this.id;
+            })[0];
+        },
+        subjects: function subjects() {
+            return this.$store.getters.allSubjects;
+        }
+    },
+    methods: {
+        registerSubject: function registerSubject(student_id, subject_id) {
+            var payload = { student_id: student_id, subject_id: subject_id };
+            this.$store.dispatch('registerStudentToSubject', payload);
+        },
+        unregisterSubject: function unregisterSubject(student_id, subject_id) {
+            var payload = { student_id: student_id, subject_id: subject_id };
+            this.$store.dispatch('unregisterStudentToSubject', payload);
+        }
+    }
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('router-link', {
+    staticClass: "btn btn-default btn-sm",
+    attrs: {
+      "exact": "",
+      "to": "/students"
+    }
+  }, [_c('i', {
+    staticClass: "glyphicon glyphicon-chevron-left"
+  })]), _vm._v("\n                    " + _vm._s(_vm.student.first_name + ' ' + _vm.student.last_name) + "\n                ")], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.subjects), function(subject) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_vm._v("\n                            " + _vm._s(subject.subject) + "\n                            "), _c('span', {
+      staticClass: "pull-right"
+    }, [(_vm.student.subject_ids.indexOf(subject.id) < 0) ? _c('button', {
+      staticClass: "btn btn-sm btn-success",
+      on: {
+        "click": function($event) {
+          _vm.registerSubject(_vm.student_id, subject.id)
+        }
+      }
+    }, [_vm._v("Register")]) : _vm._e(), _vm._v(" "), (_vm.student.subject_ids.indexOf(subject.id) >= 0) ? _c('button', {
+      staticClass: "btn btn-sm btn-danger",
+      on: {
+        "click": function($event) {
+          _vm.unregisterSubject(_vm.student_id, subject.id)
+        }
+      }
+    }, [_vm._v("Unregister")]) : _vm._e()]), _vm._v(" "), _c('div', {
+      staticClass: "clearfix"
+    })])
+  }))])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5b9c6f8c", module.exports)
   }
 }
 

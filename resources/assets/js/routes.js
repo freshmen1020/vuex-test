@@ -12,6 +12,11 @@ export default new VueRouter({
 			component: require('./components/students/Students-Register')
 		},
 		{
+			path: '/students/:id',
+			props: true,
+			component: require('./components/students/Students-Subjects')
+		},
+		{
 			path: '/subjects',
 			component: require('./components/Subjects')
 		}
