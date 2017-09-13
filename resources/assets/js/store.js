@@ -47,16 +47,18 @@ export default new Vuex.Store({
 			})
 		},
 		updateStudentSubjects(state, payload){
-			const student = state.students.find(student.id == payload.student_id)
-			index = state.students.indexOf(student)
-			state.students[index] = payload;
-		},
-		updateStudentSubjectIds(state, payload){
-			const student = state.students.find(student => {
+			const index = state.students.findIndex(student => {
 				return student.id == payload.student_id;
 			})
 
-			student.subject_ids = payload.data;
+			state.students[index].subjects = payload.data;
+		},
+		updateStudentSubjectIds(state, payload){
+			const index = state.students.findIndex(student => {
+				return student.id == payload.student_id;
+			})
+
+			state.students[index].subject_ids = payload.data;
 		}
 	},
 	actions: {
