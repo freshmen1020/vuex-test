@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main');
-});
+
+// Route::get('/', function () {
+//     return view('main');
+// });
 
 Route::group(['prefix'=>'api'], function(){
 	Route::get('students', 'StudentsController@index');
@@ -24,3 +25,7 @@ Route::group(['prefix'=>'api'], function(){
 	Route::post('register-to-subject', 'SubjectsController@register');
 	Route::post('unregister-to-subject', 'SubjectsController@unregister');
 });
+
+Route::any('/{all}', function () {
+    return view('main');
+})->where(['all' => '.*']);
